@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Main text colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black_dull">#0A0909</color>
+    <color name="purple">#6F67CE</color>
+    <color name="gray_light">#C2C7DD</color>
+    <color name="gray_dark">#817E7E</color>
+
+    <!-- Gradient catalog background color -->
+    <color name="blue_baby">#B4BBF4</color>
+    <color name="blue_cold">#7470B2</color> <!--37.92%-->
+    <color name="blue_bright">#4C428A</color>
+
+    <!-- Gradient player background -->
+    <color name="blue_rusted">#333437</color>
+    <color name="black_rusted">#151414</color> <!--26%-->
+
+    <!-- Gradient selection -->
+    <color name="black_silver">#0E0E0E</color>
+    <color name="pink">#CB80D2</color>
+
+    <!-- Action Bar -->
+    <color name="black_transparent">#55000000</color>
 </resources>
