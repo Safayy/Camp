@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Base.Theme.CAMP" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/black_dull</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/grayblue_light</item>
     </style>
 
     <style name="Theme.CAMP" parent="Base.Theme.CAMP" />
