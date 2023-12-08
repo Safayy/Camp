@@ -5,6 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black_dull">#0A0909</color>
     <color name="purple">#6F67CE</color>
+    <color name="gray_faded">#7B7B7B</color>
     <color name="gray_light">#C2C7DD</color>
     <color name="gray_dark">#817E7E</color>
 
