@@ -44,9 +44,8 @@ public class PlaylistDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_SONG_ALBUM = "song_album";
     private static final String KEY_SONG_DURATION = "song_duration";
     private static final String KEY_SONG_FAVORITE = "song_favorite";
-    private static final String KEY_SONG_IMAGE_URI = "song_image_uri";
-    private static final String KEY_PLAYLIST_ID = "playlist_id";
-    private static final String KEY_SONG_ALBUM_ID = "song_album_id"; // Add this line for albumId column
+    private static final String KEY_SONG_ALBUM_ID = "song_album_id";
+    private static final String KEY_PLAYLIST_ID = "playlist_id"; //TODO remove
 
     private static final String CREATE_TABLE_SONGS = "CREATE TABLE " + TABLE_SONGS + "("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -56,10 +55,22 @@ public class PlaylistDatabaseHelper extends SQLiteOpenHelper {
             + KEY_SONG_ALBUM + " TEXT,"
             + KEY_SONG_DURATION + " TEXT,"
             + KEY_SONG_FAVORITE + " INTEGER,"
-            + KEY_SONG_ALBUM_ID + " TEXT," // Add this line for albumId column
+            + KEY_SONG_ALBUM_ID + " LONG,"
             + KEY_PLAYLIST_ID + " INTEGER,"
             + "FOREIGN KEY (" + KEY_PLAYLIST_ID + ") REFERENCES " + TABLE_PLAYLISTS + "(" + KEY_ID + ")"
             + ")";
+
+
+//    private static final String CREATE_TABLE_SONGS = "CREATE TABLE " + TABLE_SONGS + "("
+//            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+//            + KEY_SONG_PATH + " TEXT,"
+//            + KEY_SONG_TITLE + " TEXT,"
+//            + KEY_SONG_ARTIST + " TEXT,"
+//            + KEY_SONG_ALBUM + " TEXT,"
+//            + KEY_SONG_DURATION + " TEXT,"
+//            + KEY_SONG_FAVORITE + " INTEGER,"
+//            + KEY_SONG_ALBUM_ID + " INTEGER"
+//            + ")";
 
     // Create table statements
     private static final String CREATE_TABLE_PLAYLISTS = "CREATE TABLE " + TABLE_PLAYLISTS + "("
@@ -126,8 +137,7 @@ public class PlaylistDatabaseHelper extends SQLiteOpenHelper {
                             String album = jsonSong.getString("album");
                             String duration = jsonSong.getString("duration");
                             String isFavorite = jsonSong.getString("isFavorite");
-                            String albumId = jsonSong.getString("imageUri");
-//                            Log.d(TAG, "getAllPlaylists: ALBUMN ID" + albumId);
+                            int albumId = Integer.parseInt(jsonSong.getString("albumId"));
 
                             SongModel songModel = new SongModel(path, title, artist, album,
                                     duration, Boolean.parseBoolean(isFavorite), albumId);
@@ -201,7 +211,7 @@ public class PlaylistDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_SONG_DURATION, song.getDuration());
         values.put(KEY_SONG_FAVORITE, song.isFavorite() ? 1 : 0);
         values.put(KEY_SONG_ALBUM_ID, song.getAlbumId());
-        values.put(KEY_PLAYLIST_ID, playlistId);
+        values.put(KEY_PLAYLIST_ID, playlistId);  // TODO remove
         return db.insert(TABLE_SONGS, null, values);
     }
 
@@ -220,7 +230,7 @@ public class PlaylistDatabaseHelper extends SQLiteOpenHelper {
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getInt(5) == 1,
-                        cursor.getString(6));
+                        Long.parseLong(cursor.getString(6)));
 
                 songs.add(song);
             } while (cursor.moveToNext());

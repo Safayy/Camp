@@ -21,20 +21,22 @@ import java.util.ArrayList;
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> implements Filterable {
     String TAG = "PlaylistAdapter";
     Context context;
+    private RecyclerViewInterface recyclerViewInterface;
     ArrayList<PlaylistModel> playlistModels;
     private ItemFilter<PlaylistModel> filter;
 
-    public PlaylistAdapter(Context context, ArrayList<PlaylistModel> playlistModels){
+    public PlaylistAdapter(Context context, ArrayList<PlaylistModel> playlistModels, RecyclerViewInterface recyclerViewInterface){
         this.context = context;
         this.playlistModels = playlistModels;
         this.filter = new ItemFilter<>(playlistModels, this, new PlaylistFilterListener());
+        this.recyclerViewInterface = recyclerViewInterface;
     }
     @NonNull
     @Override
     public PlaylistAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.playlist, parent, false);
-        return new PlaylistAdapter.ViewHolder(view);
+        return new PlaylistAdapter.ViewHolder(view, recyclerViewInterface);
     }
 
     @Override
@@ -66,11 +68,23 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         TextView tvName;
         TextView tvArtist;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             imageView = itemView.findViewById(R.id.ivPlaylist);
             tvName = itemView.findViewById(R.id.tvPlaylistName);
             tvArtist = itemView.findViewById(R.id.tvPlaylistArtist);
+
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    if(recyclerViewInterface != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            recyclerViewInterface.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

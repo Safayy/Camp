@@ -20,13 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> implements Filterable {
-    private RecyclerViewInterface recyclerViewInterface;
-
     String TAG = "SongAdapter";
     Context context;
+    private RecyclerViewInterface recyclerViewInterface;
     ArrayList<SongModel> songModels;
     private ItemFilter<SongModel> filter;
-    private int currentlyPlayingPosition = -1;
     public SongAdapter(Context context, ArrayList<SongModel> songModels, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.songModels = songModels;
@@ -34,16 +32,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
-    public SongAdapter(Context context, ArrayList<SongModel> songModels) {
-        this.context = context;
-        this.songModels = songModels;
-        this.filter = new ItemFilter<>(songModels, this, new SongFilterListener());
-    }
-
-    public void setCurrentlyPlayingPosition(int position) {
-        this.currentlyPlayingPosition = position;
-        notifyDataSetChanged();
-    }
+//    public SongAdapter(Context context, ArrayList<SongModel> songModels) {
+//        this.context = context;
+//        this.songModels = songModels;
+//        this.filter = new ItemFilter<>(songModels, this, new SongFilterListener());
+//    }
 
     @NonNull
     @Override
@@ -58,7 +51,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
         holder.imageView.setImageDrawable(songModels.get(position).getImage(context));
         holder.tvTitle.setText(songModels.get(position).getTitle());
         holder.tvArtist.setText(songModels.get(position).getArtist());
-        if (position == currentlyPlayingPosition) {
+        if (position == MediaStateManager.getInstance().getCurrentPosition()) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.purple));
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT); // Reset background color

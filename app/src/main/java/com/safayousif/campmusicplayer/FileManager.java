@@ -21,12 +21,17 @@ public class FileManager {
     public ArrayList<PlaylistModel> getPlaylists(Context context){
         PlaylistDatabaseHelper playlistDatabaseHelper = new PlaylistDatabaseHelper(context);
 
-//        PlaylistModel playlist = new PlaylistModel("Renaissance",
-//                new ArrayList<>(Arrays.asList(songModels.get(0), songModels.get(3))), context);
-//        playlistDatabaseHelper.addPlaylist(playlist);
+        PlaylistModel playlist = new PlaylistModel("Renaissance",
+                new ArrayList<>(Arrays.asList(songModels.get(0), songModels.get(8))), context);
+        playlistDatabaseHelper.addPlaylist(playlist);
 
         ArrayList<PlaylistModel> playlistModels = (ArrayList<PlaylistModel>) playlistDatabaseHelper.getAllPlaylists(context);
-        return playlistModels;
+//        Log.d(TAG, playlistModels.get(0).getPlaylistName());
+
+//        return playlistModels;
+        ArrayList<PlaylistModel> mModels = new ArrayList<>();
+        mModels.add(playlist);
+        return mModels;
     }
 
     // Prints all file names in the music directory
@@ -46,7 +51,6 @@ public class FileManager {
         String[] selectionArgs = new String[]{"%" + musicFolderPath + "%"};
 
         Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-
         if(cursor != null){
             while(cursor.moveToNext()){
                 String albumId = cursor.getString(5);
@@ -58,8 +62,9 @@ public class FileManager {
                         cursor.getString(3),
                         cursor.getString(4),
                         false,
-                        cursor.getString(5)
+                        Long.parseLong(cursor.getString(5))
                 );
+//                Log.d(TAG, "AlbumnID: "+cursor.getString(5));
                 tempSongs.add(song);
             }
             cursor.close();

@@ -40,7 +40,16 @@ public class MainActivity extends MediaPlaybackActivity {
         RecyclerView playlistRecyclerView = findViewById(R.id.rvPlaylist);
         RecyclerView songRecyclerView = findViewById(R.id.rvAllSongs);
 
-        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistModels);
+        RecyclerViewInterface playlistRecyclerViewInterface = new RecyclerViewInterface() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(MainActivity.this, PlaylistActivity.class);
+                intent.putExtra("PLAYLIST_MODEL", playlistModels.get(position));
+                startActivity(intent);
+//                songAdapter.notifyDataSetChanged();
+            }
+        };
+        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistModels, playlistRecyclerViewInterface);
         playlistRecyclerView.setAdapter(playlistAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -69,12 +78,7 @@ public class MainActivity extends MediaPlaybackActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Default Highlight
-        int savedPosition = super.retrievePosition();
-        if (savedPosition != -1) {
-            Log.d(TAG, "saved position " + savedPosition);
-            songAdapter.setCurrentlyPlayingPosition(savedPosition);
-        }
+        songAdapter.notifyDataSetChanged();
     }
 
     public void checkPermission(){
@@ -105,21 +109,13 @@ public class MainActivity extends MediaPlaybackActivity {
 
     @Override
     public void onItemClick(int position) {
-        super.onItemClick(position, songModels.get(position).getPath());
+        super.onItemClick(position, songModels.get(position));
 
-        // Create default playlist of all songs
         PlaylistModel playlist = new PlaylistModel(getResources().getString(R.string.all_songs_header), songModels, this);
 
-        // Start player activity
         Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
         intent.putExtra("PLAYLIST_MODEL", playlist);
-        intent.putExtra("SONG_MODEL", songModels.get(position));
-//        intent.putExtra("", songModels.get(position));
         startActivity(intent);
-        //overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
-
-        // Set currently playing song
-        super.savePosition(position);
-        songAdapter.setCurrentlyPlayingPosition(position);
+        songAdapter.notifyDataSetChanged();
     }
 }

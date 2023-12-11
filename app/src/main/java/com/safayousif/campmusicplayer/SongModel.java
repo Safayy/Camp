@@ -5,13 +5,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.net.Uri;
 import java.io.InputStream;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -26,11 +24,10 @@ public class SongModel implements Parcelable {
     private String duration;
     private String playlists[];
     private boolean isFavorite;
-    public Uri imageUri;
     public Bitmap albumArt;
-    public String albumId;
+    public long albumId;
 
-    public SongModel(String path, String title, String artist, String album, String duration, boolean isFavorite, String albumId) {
+    public SongModel(String path, String title, String artist, String album, String duration, boolean isFavorite, long albumId) {
         this.path = path;
         this.title = title;
         this.artist = artist;
@@ -38,9 +35,6 @@ public class SongModel implements Parcelable {
         this.duration = duration;
         this.isFavorite = isFavorite; // Default False
         this.albumId = albumId;
-
-        Uri albumArtUri = Uri.parse("content://media/external/audio/albumart/" + albumId);
-        this.imageUri = albumArtUri;
     }
 
     protected SongModel(Parcel in) {
@@ -50,8 +44,7 @@ public class SongModel implements Parcelable {
         album = in.readString();
         duration = in.readString();
         isFavorite = in.readByte() != 0;
-        albumId = in.readString();
-        imageUri = in.readParcelable(Uri.class.getClassLoader());
+        albumId = in.readLong();
     }
 
     public static final Creator<SongModel> CREATOR = new Creator<SongModel>() {
@@ -79,8 +72,8 @@ public class SongModel implements Parcelable {
         dest.writeString(album);
         dest.writeString(duration);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
-        dest.writeString(albumId);
-        dest.writeParcelable(imageUri, flags);
+        dest.writeLong(albumId);
+//        dest.writeParcelable(imageUri, flags);
     }
     public String getTitle() {
         return title;
@@ -97,9 +90,12 @@ public class SongModel implements Parcelable {
     public Bitmap getAlbumArt(Context context) {
         Bitmap albumArt = null;
         try {
-            InputStream is = context.getContentResolver().openInputStream(this.imageUri);
-            albumArt = BitmapFactory.decodeStream(is);
+            // Use the content resolver to open the input stream
+            InputStream is = context.getContentResolver().openInputStream(this.getImageUri());
             if (is != null) {
+                // Decode the stream into a bitmap
+                albumArt = BitmapFactory.decodeStream(is);
+                // Close the stream
                 is.close();
             }
         } catch (IOException e) {
@@ -122,7 +118,7 @@ public class SongModel implements Parcelable {
         return path;
     }
 
-    public String getAlbumn() {
+    public String getAlbum() {
         return album;
     }
 
@@ -130,16 +126,12 @@ public class SongModel implements Parcelable {
         return playlists;
     }
 
-    public String getAlbum() {
-        return album;
-    }
-
     public String getDuration() {
         return duration;
     }
 
     public Uri getImageUri() {
-        return imageUri;
+        return Uri.parse("content://media/external/audio/albumart/" + albumId);
     }
 
     @NonNull
@@ -156,7 +148,7 @@ public class SongModel implements Parcelable {
                 '}';
     }
 
-    public String getAlbumId() {
+    public long getAlbumId() {
         return albumId;
     }
 }

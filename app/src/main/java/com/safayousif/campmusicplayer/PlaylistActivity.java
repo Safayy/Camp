@@ -21,7 +21,6 @@ public class PlaylistActivity extends MediaPlaybackActivity {
         setContentView(R.layout.activity_playlist);
 
         // Get Parcelables
-        SongModel songModel = getIntent().getParcelableExtra("SONG_MODEL");
         playlistModel = getIntent().getParcelableExtra("PLAYLIST_MODEL");
 
         // Update Recycler View
@@ -30,14 +29,8 @@ public class PlaylistActivity extends MediaPlaybackActivity {
         songRecyclerView.setAdapter(songAdapter);
         songRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Highlight playing song
-//        int position = 0;
-//        for (int i=0; i< playlistModel.getSongs().size(); i++){
-//            if (playlistModel.getSongs().get(i).getTitle().equals(songModel.getTitle()))
-//                break;
-//        }
-        Log.d(TAG, "Position of playing song is " +super.retrievePosition());
-        songAdapter.setCurrentlyPlayingPosition(super.retrievePosition());
+        Log.d(TAG, "Position of playing song is " + MediaStateManager.getInstance().getCurrentPosition());
+        songAdapter.notifyDataSetChanged();
 
         // Populate Data
         TextView tvPlaylistIndicator = findViewById(R.id.tvPlaylistIndicator);
@@ -57,8 +50,9 @@ public class PlaylistActivity extends MediaPlaybackActivity {
 
     @Override
     public void onItemClick(int position) {
-        super.onItemClick(position, playlistModel.getSongs().get(position).getPath());
-        super.savePosition(position);
-        songAdapter.setCurrentlyPlayingPosition(position);
+        super.onItemClick(position, playlistModel.getSongs().get(position));
+        Log.d(TAG, "Clicked on playlsit item");
+        MediaStateManager.getInstance().setCurrentPosition(position);
+        songAdapter.notifyDataSetChanged();
     }
 }

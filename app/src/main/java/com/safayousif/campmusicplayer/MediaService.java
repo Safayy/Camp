@@ -31,6 +31,13 @@ public class MediaService extends Service {
         try {
             mediaPlayer.setDataSource(path);
             mediaPlayer.prepare();
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // Song playback completed, perform actions here
+                    // For example, you can notify the client or update UI
+                }
+            });
             mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();

@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -20,7 +21,6 @@ public abstract class MediaPlaybackActivity extends AppCompatActivity implements
     private static final String TAG = "MediaPlaybackActivity";
     private MediaService mediaService;
     private boolean isBound = false;
-    private int position;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,25 +29,24 @@ public abstract class MediaPlaybackActivity extends AppCompatActivity implements
         // Bind Media Service
         Intent intent = new Intent(this, MediaService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
-        // Retrieve the last saved position
-        position = retrievePosition();
     }
 
     public boolean getIsBound() {
         return isBound;
     }
 
-    public void onItemClick(int position, String path) {
+    public void onItemClick(int position, SongModel songModel) {
         // Start song
-        if (mediaService == null) {
+        if (mediaService == null)
             mediaService = new MediaService();
-        }
-        mediaService.playSong(path);
-        Log.d(TAG, "Super onItemClick: Playing song position in playlist" + position);
 
-        // Save the current position
-        savePosition(position);
+        if (MediaStateManager.getInstance().getCurrentSong() == null ||
+                !songModel.toString().equals(MediaStateManager.getInstance().getCurrentSong().toString())) {
+            mediaService.playSong(songModel.getPath());
+        }
+
+        MediaStateManager.getInstance().setCurrentPosition(position);
+        MediaStateManager.getInstance().setCurrentSong(songModel);
     }
 
     @Override
@@ -72,16 +71,4 @@ public abstract class MediaPlaybackActivity extends AppCompatActivity implements
             isBound = false;
         }
     };
-
-    public void savePosition(int position) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("POSITION_KEY", position);
-        editor.apply();
-    }
-
-    public int retrievePosition() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return preferences.getInt("POSITION_KEY", -1);
-    }
 }
