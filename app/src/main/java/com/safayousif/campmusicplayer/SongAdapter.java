@@ -1,6 +1,7 @@
-package com.example.camp;
+package com.safayousif.campmusicplayer;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+
 
 import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> implements Filterable {
+    private RecyclerViewInterface recyclerViewInterface;
+
     String TAG = "SongAdapter";
     Context context;
     ArrayList<SongModel> songModels;
     private ItemFilter<SongModel> filter;
+    private int currentlyPlayingPosition = -1;
+    public SongAdapter(Context context, ArrayList<SongModel> songModels, RecyclerViewInterface recyclerViewInterface) {
+        this.context = context;
+        this.songModels = songModels;
+        this.filter = new ItemFilter<>(songModels, this, new SongFilterListener());
+        this.recyclerViewInterface = recyclerViewInterface;
+    }
 
     public SongAdapter(Context context, ArrayList<SongModel> songModels) {
         this.context = context;
@@ -27,19 +40,29 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
         this.filter = new ItemFilter<>(songModels, this, new SongFilterListener());
     }
 
+    public void setCurrentlyPlayingPosition(int position) {
+        this.currentlyPlayingPosition = position;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public SongAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.song, parent, false);
-        return new SongAdapter.ViewHolder(view);
+        return new SongAdapter.ViewHolder(view, recyclerViewInterface);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SongAdapter.ViewHolder holder, int position) {
-        holder.imageView.setImageResource(songModels.get(position).getImage());
+        holder.imageView.setImageDrawable(songModels.get(position).getImage(context));
         holder.tvTitle.setText(songModels.get(position).getTitle());
         holder.tvArtist.setText(songModels.get(position).getArtist());
+        if (position == currentlyPlayingPosition) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.purple));
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT); // Reset background color
+        }
 //        holder.ibFavorite.setImageResource(songModels.get(position).getImage()); //TODO
 //        holder.ibMenu.setImageResource(songModels.get(position).getImage()); //TODO
     }
@@ -65,13 +88,25 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
         TextView tvArtist;
         ImageButton ibFavorite;
         ImageButton ibMenu;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             imageView = itemView.findViewById(R.id.ivSong);
             tvTitle = itemView.findViewById(R.id.tvSongsTitle);
             tvArtist = itemView.findViewById(R.id.tvSongsArtist);
             ibFavorite = itemView.findViewById(R.id.ibFavorite);
             ibMenu = itemView.findViewById(R.id.ibMenu);
+
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    if(recyclerViewInterface != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            recyclerViewInterface.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

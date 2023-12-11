@@ -1,4 +1,4 @@
-package com.example.camp;
+package com.safayousif.campmusicplayer;
 
 import android.content.Context;
 

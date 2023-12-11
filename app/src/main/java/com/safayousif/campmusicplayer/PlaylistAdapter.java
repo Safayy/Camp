@@ -1,7 +1,9 @@
-package com.example.camp;
+package com.safayousif.campmusicplayer;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> implements Filterable {
     String TAG = "PlaylistAdapter";
@@ -39,7 +41,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     public void onBindViewHolder(@NonNull PlaylistAdapter.ViewHolder holder, int position) {
         holder.tvName.setText(playlistModels.get(position).getPlaylistName());
         holder.tvArtist.setText(playlistModels.get(position).getArtistName());
-        holder.imageView.setImageResource(playlistModels.get(position).getImage());
+        holder.imageView.setImageDrawable(playlistModels.get(position).getImage(context));
     }
 
     @Override

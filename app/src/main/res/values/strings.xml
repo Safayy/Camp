@@ -10,7 +10,10 @@
     <string name="search_title">Search for a song&#8230;</string>
 
     <!-- Player -->
-    <string name="playing_title">Playing:</string>
+    <string name="playing_title">Playing: %s</string>
+
+    <!-- Playlist -->
+    <string name="playlist_title_artist">Playing: %s by %s</string>
 
     <!-- Menu -->
     <string name="play_next_title">Play next</string>
