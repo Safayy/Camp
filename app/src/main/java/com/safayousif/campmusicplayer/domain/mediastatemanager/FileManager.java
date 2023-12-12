@@ -1,14 +1,14 @@
-package com.safayousif.campmusicplayer;
+package com.safayousif.campmusicplayer.domain.mediastatemanager;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.lang.reflect.Array;
+import com.safayousif.campmusicplayer.domain.mediastatemanager.PlaylistDatabaseHelper;
+import com.safayousif.campmusicplayer.domain.model.PlaylistModel;
+import com.safayousif.campmusicplayer.domain.model.SongModel;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -61,10 +61,9 @@ public class FileManager {
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
-                        false,
+                        false, //TODO read from db
                         Long.parseLong(cursor.getString(5))
                 );
-//                Log.d(TAG, "AlbumnID: "+cursor.getString(5));
                 tempSongs.add(song);
             }
             cursor.close();

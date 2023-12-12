@@ -1,26 +1,23 @@
-package com.safayousif.campmusicplayer;
+package com.safayousif.campmusicplayer.domain.mediastatemanager;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import com.safayousif.campmusicplayer.domain.model.PlaylistModel;
+import com.safayousif.campmusicplayer.domain.model.SongModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 public class PlaylistDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "playlist_db";

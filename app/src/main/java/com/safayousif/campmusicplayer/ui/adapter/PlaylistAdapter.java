@@ -1,9 +1,6 @@
-package com.safayousif.campmusicplayer;
-
-import static androidx.core.content.ContextCompat.startActivity;
+package com.safayousif.campmusicplayer.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.safayousif.campmusicplayer.R;
+import com.safayousif.campmusicplayer.domain.model.PlaylistModel;
+import com.safayousif.campmusicplayer.ui.mapper.ItemFilter;
+import com.safayousif.campmusicplayer.ui.utils.RecyclerViewInterface;
 
 import java.util.ArrayList;
 
@@ -80,7 +82,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
                     if(recyclerViewInterface != null){
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION){
-                            recyclerViewInterface.onItemClick(position);
+                            recyclerViewInterface.onPlaylistItemClick(position);
                         }
                     }
                 }

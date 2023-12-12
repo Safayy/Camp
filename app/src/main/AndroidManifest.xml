@@ -16,13 +16,13 @@
         android:theme="@style/Theme.CAMP"
         tools:targetApi="31">
         <activity
-            android:name=".PlaylistActivity"
+            android:name=".ui.screens.PlaylistActivity"
             android:exported="false" />
         <activity
-            android:name=".PlayerActivity"
+            android:name=".ui.screens.PlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.screens.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
         </activity>
 
         <service
-            android:name=".MediaService"
+            android:name=".domain.mediastatemanager.MediaService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

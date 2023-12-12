@@ -1,4 +1,4 @@
-package com.safayousif.campmusicplayer;
+package com.safayousif.campmusicplayer.ui.mapper;
 
 import androidx.recyclerview.widget.RecyclerView;
 

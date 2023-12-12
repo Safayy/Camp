@@ -1,4 +1,4 @@
-package com.safayousif.campmusicplayer;
+package com.safayousif.campmusicplayer.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,10 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.safayousif.campmusicplayer.ui.utils.FavoriteButtonUtil;
+import com.safayousif.campmusicplayer.domain.mediastatemanager.MediaStateManager;
+import com.safayousif.campmusicplayer.R;
+import com.safayousif.campmusicplayer.domain.model.SongModel;
+import com.safayousif.campmusicplayer.ui.mapper.ItemFilter;
+import com.safayousif.campmusicplayer.ui.utils.RecyclerViewInterface;
 
 import java.util.ArrayList;
 
@@ -27,7 +34,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
     private ItemFilter<SongModel> filter;
     public SongAdapter(Context context, ArrayList<SongModel> songModels, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
-        this.songModels = songModels;
+//        this.songModels = songModels;
+        this.songModels = MediaStateManager.getInstance().getCurrentPlaylist().getSongs();
         this.filter = new ItemFilter<>(songModels, this, new SongFilterListener());
         this.recyclerViewInterface = recyclerViewInterface;
     }
@@ -51,13 +59,21 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
         holder.imageView.setImageDrawable(songModels.get(position).getImage(context));
         holder.tvTitle.setText(songModels.get(position).getTitle());
         holder.tvArtist.setText(songModels.get(position).getArtist());
-        if (position == MediaStateManager.getInstance().getCurrentPosition()) {
+//        if (position == MediaStateManager.getInstance().getCurrentPosition()) {
+        if (MediaStateManager.getInstance().getCurrentPlaylist() != null && //TODO fix make less verbose
+                position < MediaStateManager.getInstance().getCurrentPlaylist().getSongs().size() &&
+                MediaStateManager.getInstance().getCurrentSong() == MediaStateManager.getInstance().getCurrentPlaylist().getSongs().get(position)) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.purple));
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT); // Reset background color
         }
-//        holder.ibFavorite.setImageResource(songModels.get(position).getImage()); //TODO
-//        holder.ibMenu.setImageResource(songModels.get(position).getImage()); //TODO
+        FavoriteButtonUtil.setupFavoriteButton(holder.ibFavorite, songModels.get(position).isFavorite(), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                songModels.get(holder.getAdapterPosition()).toggleIsFavorite();
+                notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -95,9 +111,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
                     if(recyclerViewInterface != null){
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION){
-                            recyclerViewInterface.onItemClick(position);
+                            recyclerViewInterface.onSongItemClick(position);
                         }
                     }
+                }
+            });
+            ibMenu.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    CardView cvMenu = itemView.findViewById(R.id.cvMenu);
+                    // Toggle visibility
+                    if(cvMenu.getVisibility() == View.GONE)
+                        cvMenu.setVisibility(View.VISIBLE);
+                    else
+                        cvMenu.setVisibility(View.GONE);
                 }
             });
         }

@@ -1,4 +1,4 @@
-package com.safayousif.campmusicplayer;
+package com.safayousif.campmusicplayer.domain.model;
 
 
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+
+import com.safayousif.campmusicplayer.R;
 
 import java.io.IOException;
 
@@ -33,7 +35,7 @@ public class SongModel implements Parcelable {
         this.artist = artist;
         this.album = album;
         this.duration = duration;
-        this.isFavorite = isFavorite; // Default False
+        this.isFavorite = isFavorite;
         this.albumId = albumId;
     }
 
@@ -85,6 +87,10 @@ public class SongModel implements Parcelable {
 
     public boolean isFavorite() {
         return isFavorite;
+    }
+
+    public void toggleIsFavorite(){
+        isFavorite = !isFavorite;
     }
 
     public Bitmap getAlbumArt(Context context) {

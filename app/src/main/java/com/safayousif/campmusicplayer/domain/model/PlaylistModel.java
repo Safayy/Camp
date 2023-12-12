@@ -1,14 +1,14 @@
-package com.safayousif.campmusicplayer;
+package com.safayousif.campmusicplayer.domain.model;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import com.safayousif.campmusicplayer.R;
 
 import java.util.ArrayList;
 
@@ -68,10 +68,6 @@ public class PlaylistModel implements Parcelable {
         return artistName;
     }
 
-    public Uri getImageUri() {
-        return Uri.parse("content://media/external/audio/albumart/" + albumId);
-    }
-
     public Drawable getImage(Context context) {
         Drawable image = getSongs().get(0).getImage(context);
         if (image != null)
@@ -83,5 +79,11 @@ public class PlaylistModel implements Parcelable {
 
     public ArrayList<SongModel> getSongs() {
         return songs;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getPlaylistName() + getArtistName() + getSongs().toString();
     }
 }
