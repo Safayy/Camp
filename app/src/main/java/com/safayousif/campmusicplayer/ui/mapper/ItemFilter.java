@@ -10,7 +10,7 @@ import android.widget.Filter;
 
 public class ItemFilter<T> extends Filter {
     String TAG = "ItemFilter";
-    private final List<T> originalList;
+    private List<T> originalList;
     private List<T> filteredList;
     private RecyclerView.Adapter adapter;
     private FilterListener<T> filterListener;
@@ -19,6 +19,10 @@ public class ItemFilter<T> extends Filter {
         this.originalList = new ArrayList<>(itemModels);
         this.adapter = adapter;
         this.filterListener = filterListener;
+    }
+
+    public void updateList(List<T> newOriginalList){
+        this.originalList = newOriginalList;
     }
 
     @Override

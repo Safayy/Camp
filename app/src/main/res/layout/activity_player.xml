@@ -40,20 +40,20 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
+        android:src="@drawable/baseline_error_24"
         app:civ_border_color="@android:color/transparent"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/tvPlayerTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPlayerPlaylistIndicator"
-        android:src="@drawable/ic_launcher_background"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvPlayerPlaylistIndicator" />
 
     <TextView
         android:id="@+id/tvPlayerArtist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Kairiki Bear, VFlower"
+        android:text="Cannot receive song data. Please try again."
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/tvPlayerTitle"
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Venom"
+        android:text="An error has occured"
         android:textColor="@color/purple"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -69,6 +69,8 @@ public class PlaylistModel implements Parcelable {
     }
 
     public Drawable getImage(Context context) {
+        if(getSongs().size() == 0)
+            return null;
         Drawable image = getSongs().get(0).getImage(context);
         if (image != null)
             return image;

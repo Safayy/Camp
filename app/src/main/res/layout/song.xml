@@ -86,9 +86,10 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:cardBackgroundColor="@color/grayblue_light"
 
+                app:cardCornerRadius="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -98,11 +99,10 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="1dp">
+                    android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tvArchive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -111,43 +111,43 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageButton2" />
+                        app:layout_constraintStart_toEndOf="@+id/ivBtnArchive" />
 
                     <ImageButton
-                        android:id="@+id/imageButton"
+                        android:id="@+id/ivBtnPlayNext"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvPlayNext"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         card_view:srcCompat="@drawable/ic_playlist_item_add" />
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/ivBtnArchive"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView3"
+                        app:layout_constraintTop_toTopOf="@+id/tvArchive"
                         card_view:srcCompat="@drawable/ic_archive" />
 
                     <ImageButton
-                        android:id="@+id/imageButton4"
+                        android:id="@+id/ivBtnAddPlaylist"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="10dp"
                         android:background="@android:color/transparent"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvAddPlaylist"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView2"
+                        app:layout_constraintTop_toTopOf="@+id/tvAddPlaylist"
                         card_view:srcCompat="@drawable/ic_playlist_item_remove" />
 
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/tvPlayNext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -155,21 +155,21 @@
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageButton"
+                        app:layout_constraintStart_toEndOf="@+id/ivBtnPlayNext"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/tvAddPlaylist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@string/remove_title"
+                        android:text="@string/menu_manage_title"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView3"
+                        app:layout_constraintBottom_toTopOf="@+id/tvArchive"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageButton4"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        app:layout_constraintStart_toEndOf="@+id/ivBtnAddPlaylist"
+                        app:layout_constraintTop_toBottomOf="@+id/tvPlayNext" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

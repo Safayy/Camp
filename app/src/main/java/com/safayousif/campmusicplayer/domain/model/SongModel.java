@@ -28,6 +28,7 @@ public class SongModel implements Parcelable {
     private boolean isFavorite;
     public Bitmap albumArt;
     public long albumId;
+    private boolean isArchived;
 
     public SongModel(String path, String title, String artist, String album, String duration, boolean isFavorite, long albumId) {
         this.path = path;
@@ -37,6 +38,11 @@ public class SongModel implements Parcelable {
         this.duration = duration;
         this.isFavorite = isFavorite;
         this.albumId = albumId;
+        this.isArchived = false;
+    }
+    public SongModel(String title) { //Archived song
+        this.title = title;
+        this.isArchived = true;
     }
 
     protected SongModel(Parcel in) {
@@ -47,6 +53,10 @@ public class SongModel implements Parcelable {
         duration = in.readString();
         isFavorite = in.readByte() != 0;
         albumId = in.readLong();
+    }
+
+    public boolean getIsArchived(){
+        return isArchived;
     }
 
     public static final Creator<SongModel> CREATOR = new Creator<SongModel>() {
@@ -91,6 +101,10 @@ public class SongModel implements Parcelable {
 
     public void toggleIsFavorite(){
         isFavorite = !isFavorite;
+    }
+
+    public void setIsFavorite(Boolean newIsFavorite){
+        isFavorite = newIsFavorite;
     }
 
     public Bitmap getAlbumArt(Context context) {

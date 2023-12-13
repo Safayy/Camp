@@ -4,6 +4,7 @@ import static com.safayousif.campmusicplayer.domain.mediastatemanager.MediaState
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
 
+import com.safayousif.campmusicplayer.domain.mediastatemanager.DatabaseHelper;
 import com.safayousif.campmusicplayer.ui.utils.FavoriteButtonUtil;
 import com.safayousif.campmusicplayer.ui.utils.MediaChangeObserver;
 import com.safayousif.campmusicplayer.domain.mediastatemanager.MediaStateManager;
@@ -21,16 +23,11 @@ import com.safayousif.campmusicplayer.domain.model.SongModel;
 
 public class PlayerActivity extends AppCompatActivity implements MediaChangeObserver {
     private static final String TAG = "PlayerActivity";
-
+    Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
-        // Get Data //TODO remove
-//        MediaStateManager mediaStateManager = MediaStateManager.getInstance();
-//        PlaylistModel playlist = mediaStateManager.getCurrentPlaylist();
-//        SongModel song = mediaStateManager.getCurrentSong();
 
         // Populate data
         ImageButton ibPlaylist = findViewById(R.id.ibPlaylist);
@@ -90,18 +87,21 @@ public class PlayerActivity extends AppCompatActivity implements MediaChangeObse
 
     void setupUI(){
         // Play Song
-        getMediaService().playSong(MediaStateManager.getInstance().getCurrentSong().getPath()); //TODO
+        if(MediaStateManager.getInstance().getCurrentSong() != null)
+            getMediaService().playSong(MediaStateManager.getInstance().getCurrentSong().getPath());
 
         // Populate Data
         SongModel currentSong = MediaStateManager.getInstance().getCurrentSong();
         String playlistName = MediaStateManager.getInstance().getCurrentPlaylist().getPlaylistName();
-        if (currentSong != null){
+        if (playlistName!= null && currentSong != null){
             ImageView ivPlayerImage = findViewById(R.id.ivPlayerImage);
             TextView tvPlayerPlaylistIndicator = findViewById(R.id.tvPlayerPlaylistIndicator);
             TextView tvPlayerTitle = findViewById(R.id.tvPlayerTitle);
             TextView tvPlayerArtist = findViewById(R.id.tvPlayerArtist);
 
-            ivPlayerImage.setImageDrawable(currentSong.getImage(this));
+//            if(currentSong!=null || currentSong.getImage(this) != null)
+            Log.d(TAG, "setupUI: i");
+            ivPlayerImage.setImageDrawable(currentSong.getImage(context));
             tvPlayerPlaylistIndicator.setText(getString(R.string.playing_title, playlistName));
             tvPlayerTitle.setText(currentSong.getTitle());
             tvPlayerArtist.setText(currentSong.getArtist());
@@ -115,14 +115,18 @@ public class PlayerActivity extends AppCompatActivity implements MediaChangeObse
 
         // Set Favorite status
         ImageButton ibPlayerFavorite = findViewById(R.id.ibPlayerFavorite);
-        FavoriteButtonUtil.setImage(ibPlayerFavorite, MediaStateManager.getInstance().getCurrentSong().isFavorite());
-        FavoriteButtonUtil.setupFavoriteButton(ibPlayerFavorite,MediaStateManager.getInstance().getCurrentSong().isFavorite(), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaStateManager.getInstance().getCurrentSong().toggleIsFavorite();
-                setupUI();
-            }
-        });
+        if(MediaStateManager.getInstance().getCurrentSong() != null) {
+            FavoriteButtonUtil.setImage(ibPlayerFavorite, MediaStateManager.getInstance().getCurrentSong().isFavorite());
+            FavoriteButtonUtil.setupFavoriteButton(ibPlayerFavorite, MediaStateManager.getInstance().getCurrentSong().isFavorite(), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MediaStateManager.getInstance().getCurrentSong().toggleIsFavorite();
+                    DatabaseHelper dbHelper = new DatabaseHelper(context);
+                    dbHelper.updateSongIsFavorite(currentSong);
+                    setupUI();
+                }
+            });
+        }
     }
 
     @Override

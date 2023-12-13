@@ -1,45 +1,53 @@
 package com.safayousif.campmusicplayer.domain.mediastatemanager;
+
 import android.content.Context;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
-import com.safayousif.campmusicplayer.domain.mediastatemanager.PlaylistDatabaseHelper;
-import com.safayousif.campmusicplayer.domain.model.PlaylistModel;
 import com.safayousif.campmusicplayer.domain.model.SongModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FileManager {
-    String TAG = "FileManager";
-    ArrayList<SongModel> songModels;
-    public FileManager(){
+    private static FileManager instance;
+    private String TAG = "FileManager";
+    private ArrayList<SongModel> songModels;
+
+    private FileManager() {}
+    public static FileManager getInstance() {
+        if (instance == null) {
+            instance = new FileManager();
+        }
+        return instance;
     }
 
-    public ArrayList<PlaylistModel> getPlaylists(Context context){
-        PlaylistDatabaseHelper playlistDatabaseHelper = new PlaylistDatabaseHelper(context);
-
-        PlaylistModel playlist = new PlaylistModel("Renaissance",
-                new ArrayList<>(Arrays.asList(songModels.get(0), songModels.get(8))), context);
-        playlistDatabaseHelper.addPlaylist(playlist);
-
-        ArrayList<PlaylistModel> playlistModels = (ArrayList<PlaylistModel>) playlistDatabaseHelper.getAllPlaylists(context);
-//        Log.d(TAG, playlistModels.get(0).getPlaylistName());
-
-//        return playlistModels;
-        ArrayList<PlaylistModel> mModels = new ArrayList<>();
-        mModels.add(playlist);
-        return mModels;
+    public SongModel getSongByIdentifier(String songIdentifier) {
+        Log.d(TAG, "getSongByIdentifier: " + songIdentifier);
+        if (songModels != null) {
+            for (SongModel song : songModels) {
+                String currentSongIdentifier = song.getTitle() + song.getDuration();
+                if (currentSongIdentifier.equals(songIdentifier)) {
+                    Log.d(TAG, "getSongByIdentifier: FOUND:");
+                    return song;
+                }
+            }
+        }
+        return null;
     }
 
-    // Prints all file names in the music directory
-    public ArrayList<SongModel> getSongFiles(Context context) {
+    // Archive Song
+//    public void archiveSong(SongModel songModel){}
+
+    // Get all songs from filesystem
+    public ArrayList<SongModel> getSongs(Context context) {
         ArrayList<SongModel> tempSongs = new ArrayList<>();
         String musicFolderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String[] projection  = {
+        String[] projection = {
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
@@ -51,24 +59,30 @@ public class FileManager {
         String[] selectionArgs = new String[]{"%" + musicFolderPath + "%"};
 
         Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
-        if(cursor != null){
-            while(cursor.moveToNext()){
-                String albumId = cursor.getString(5);
-
+        if (cursor != null) {
+            DatabaseHelper dbHelper = new DatabaseHelper(context);
+            while (cursor.moveToNext()) {
                 SongModel song = new SongModel(
                         cursor.getString(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
-                        false, //TODO read from db
+                        false, // Default value for new songs
                         Long.parseLong(cursor.getString(5))
                 );
+                dbHelper.addSong(song);
                 tempSongs.add(song);
             }
             cursor.close();
         }
         this.songModels = tempSongs;
-        return tempSongs;
+        printSongModel();
+        return tempSongs; //Get Unarchived Songs
+    }
+
+    public void printSongModel() {
+        Log.d(TAG, "printSongModel: " + songModels.get(0).getTitle()
+                + " " + songModels.size());
     }
 }

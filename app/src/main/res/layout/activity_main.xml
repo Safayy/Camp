@@ -66,25 +66,13 @@
         app:layout_constraintTop_toTopOf="@+id/ivBtnSync" />
 
     <ImageButton
-        android:id="@+id/ivBtnSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_search" />
-
-    <ImageButton
         android:id="@+id/ivBtnSync"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivBtnSearch"
+        app:layout_constraintTop_toBottomOf="@+id/svSearch"
         app:srcCompat="@android:drawable/stat_notify_sync" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -163,28 +151,37 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svSearch"
-        style="@style/Widget.AppCompat.TextView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:ems="10"
-        android:hint="@string/search_title"
-        android:inputType="text"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:padding="0dp"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray_faded"
-        app:iconifiedByDefault="false"
+        android:layout_height="50dp"
         android:gravity="right"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        app:layout_constraintBottom_toBottomOf="@+id/ivBtnSearch"
-        app:layout_constraintEnd_toStartOf="@+id/ivBtnSearch"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivLogo"
-        app:layout_constraintTop_toTopOf="@+id/ivBtnSearch"
-        app:layout_wrapBehaviorInParent="horizontal_only"
-        tools:ignore="RtlCompat" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+<!--    <androidx.appcompat.widget.SearchView-->
+<!--        android:id="@+id/svSearch"-->
+<!--        style="@style/Widget.AppCompat.TextView"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:ems="10"-->
+<!--        android:hint="@string/search_title"-->
+<!--        android:inputType="text"-->
+<!--        android:minWidth="0dp"-->
+<!--        android:minHeight="0dp"-->
+<!--        android:padding="0dp"-->
+<!--        android:textAlignment="viewEnd"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textColorHint="@color/gray_faded"-->
+<!--        app:iconifiedByDefault="false"-->
+<!--        android:gravity="right"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/ivBtnSearch"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/ivBtnSearch"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/ivLogo"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/ivBtnSearch"-->
+<!--        app:layout_wrapBehaviorInParent="horizontal_only"-->
+<!--        tools:ignore="RtlCompat" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

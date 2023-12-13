@@ -3,30 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:adjustViewBounds="true"
         app:cardElevation="8dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        app:layout_goneMarginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="200dp"
-            android:layout_height="200dp">
+            android:layout_width="150dp"
+            android:layout_height="150dp">
 
             <ImageView
                 android:id="@+id/ivPlaylist"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:backgroundTintMode="src_atop"
+                android:scaleType="centerCrop"
                 android:tint="#AB000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="H,1:1"
@@ -41,11 +44,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="- Pinochio P"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:ellipsize="end"
-                android:maxLines="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/ivPlaylist"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -59,12 +62,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:text="GREATEST SHITS"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-                android:ellipsize="end"
-                android:maxLines="3"
                 app:layout_constraintBottom_toTopOf="@+id/tvPlaylistArtist"
                 app:layout_constraintEnd_toEndOf="@+id/ivPlaylist"
                 app:layout_constraintStart_toStartOf="@+id/ivPlaylist"

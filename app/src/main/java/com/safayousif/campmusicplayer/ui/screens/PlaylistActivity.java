@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.safayousif.campmusicplayer.domain.mediastatemanager.MediaStateManager;
 import com.safayousif.campmusicplayer.domain.model.PlaylistModel;
@@ -53,7 +54,12 @@ public class PlaylistActivity extends AppCompatActivity implements RecyclerViewI
     @Override
     public void onSongItemClick(int position) {
         PlaylistModel playlist = MediaStateManager.getInstance().getCurrentPlaylist();
-        MediaStateManager.getInstance().saveState(position, playlist);
-        songAdapter.notifyDataSetChanged();
+
+        if(!playlist.getSongs().get(position).getIsArchived()){
+            MediaStateManager.getInstance().saveState(position, playlist);
+            songAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(this, "Song is archived", Toast.LENGTH_SHORT).show();
+        }
     }
 }

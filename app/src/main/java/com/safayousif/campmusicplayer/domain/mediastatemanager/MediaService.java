@@ -28,6 +28,7 @@ public class MediaService extends Service {
 
     public void playSong(String path) {
         boolean isPlayingSong = path.equals(playingPath);
+
         // Play song if its a new song
         if(!isPlayingSong){
             stopSong();
@@ -36,14 +37,15 @@ public class MediaService extends Service {
                 playingPath = path;
                 mediaPlayer.setDataSource(playingPath);
                 mediaPlayer.prepare();
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                mediaPlayer.setOnCompletionListener( new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
                         //TODO check if last song, loop
                         PlaylistModel playlist = MediaStateManager.getInstance().getCurrentPlaylist();
                         int position = MediaStateManager.getInstance().getCurrentPosition();
                         ++position;
-                        if(!(position >= playlist.getSongs().size())){
+                        if(!(position >= playlist.getSongs().size()) &&
+                            !playlist.getSongs().get(position).getIsArchived()){
                             MediaStateManager.getInstance().setCurrentPosition(position);
                             playSong(MediaStateManager.getInstance().getCurrentSong().getPath());
                         }
@@ -58,18 +60,12 @@ public class MediaService extends Service {
 
     public void playSongPrevious() {
         int position = MediaStateManager.getInstance().getCurrentPosition();
-//        --position;
-//        if (!(position < 0))
-            MediaStateManager.getInstance().setCurrentPosition(--position);
+        MediaStateManager.getInstance().setCurrentPosition(--position);
     }
 
     public void playSongNext() {
-//        PlaylistModel playlist = MediaStateManager.getInstance().getCurrentPlaylist();
         int position = MediaStateManager.getInstance().getCurrentPosition();
-//        ++position;
-//        if(!(position >= playlist.getSongs().size())){
-            MediaStateManager.getInstance().setCurrentPosition(++position);
-//        }
+        MediaStateManager.getInstance().setCurrentPosition(++position);
     }
 
     public void resumeSong() {

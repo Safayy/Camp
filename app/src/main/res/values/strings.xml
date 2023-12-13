@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CAMP</string>
+    <string name="app_name">CAMP Music Player</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Catalog -->
@@ -14,10 +14,12 @@
 
     <!-- Playlist -->
     <string name="playlist_title_artist">Playing: %s by %s</string>
+    <string name="playlist_title_artist_attribution">- %s</string>
 
     <!-- Menu -->
     <string name="play_next_title">Play next</string>
     <string name="remove_title">Remove</string>
+    <string name="menu_manage_title">Add Playlist</string>
     <string name="favorite_title">Toggle Favorite</string>
     <string name="archive_title">Force Archive</string>
 
@@ -35,4 +37,64 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- Playlist Dialogs -->
+    <string name="dialog_btn_done_title">Done</string>
+    <string name="dialog_btn_cancel_title">Cancel</string>
+    <string name="dialog_btn_playlist_create_title">Create</string>
+    <string name="dialog_playlist_create_title">Create Playlist</string>
+    <string name="dialog_playlist_add_title">Add %s to playlists</string>
+
+    <!-- Database Strings -->
+    <string name="database_name">playlist_db</string>
+    <string name="database_version">1</string>
+    <string name="key_id">id</string>
+
+    <string name="table_playlists">playlists</string>
+    <string name="key_playlist_name">playlist_name</string>
+
+    <string name="table_songs">songs</string>
+    <string name="key_song_identifier">song_identifier</string>
+    <string name="key_song_is_favorite">song_isFavorite</string>
+    <string name="key_song_is_archived">song_isArchived</string>
+
+    <string name="table_association_playlist_songs">association_playlist_songs</string>
+    <string name="key_assoc_playlist_id">fk_playlist_id</string>
+    <string name="key_assoc_song_id">fk_song_id</string>
+
+    <string name="table_archived_songs">archived_songs</string>
+    <string name="key_archived_songs_id">pk_archived_songs_id</string>
+    <string name="key_archived_songs_song_id">fk_archived_songs_song_id</string>
+
+    <!-- Database Queries -->
+    <string name="query_create_table_songs">
+        CREATE TABLE %s (
+            %s INTEGER PRIMARY KEY AUTOINCREMENT,
+            %s TEXT,
+            %s BOOLEAN,
+            %s BOOLEAN
+        )
+    </string>
+    <string name="query_create_table_playlists">
+        CREATE TABLE %s (
+            %s INTEGER PRIMARY KEY AUTOINCREMENT,
+            %s TEXT
+        )
+    </string>
+    <string name="query_create_table_association_playlist_songs">
+        CREATE TABLE %s (
+            %s INTEGER PRIMARY KEY AUTOINCREMENT,
+            %s INTEGER,
+            %s INTEGER,
+            FOREIGN KEY (%s) REFERENCES %s(%s),
+            FOREIGN KEY (%s) REFERENCES %s(%s)
+        )
+    </string>
+    <string name="query_create_table_archived_songs">
+        CREATE TABLE %s (
+            %s INTEGER PRIMARY KEY AUTOINCREMENT,
+            %s INTEGER,
+            FOREIGN KEY (%s) REFERENCES %s(%s)
+        )
+    </string>
 </resources>
